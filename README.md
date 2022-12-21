@@ -3,7 +3,7 @@
   BSRGAN-Pip: Packaged version of the BSRGAN repository  
 </h2>
 <h4>
-    <img width="800" alt="teaser" src="docs/results.png">
+    <img width="400" alt="teaser" src="docs/results.png">
 </h4>
 </div>
 
