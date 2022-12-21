@@ -20,8 +20,6 @@ pip install bsrgan
 from bsrgan import BSRGAN
 
 model = BSRGAN(weights='kadirnar/bsrgan', device='cuda:0')
-model.save = True
-
 pred = model.predict(img_path='data/image/test.png')
 ```
 ### Citation
