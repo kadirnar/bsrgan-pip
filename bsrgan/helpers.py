@@ -6,8 +6,8 @@ from bsrgan.models.network_rrdbnet import RRDBNet
 from bsrgan.main_download_pretrained_models import attempt_download_from_hub
 
 class BSRGAN:
-    def __init__(self, model_path):
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    def __init__(self, model_path, device):
+        self.device = device
         self.model_path = attempt_download_from_hub(model_path, hf_token=None)
         self.save = True
         self.load_model()
@@ -43,3 +43,9 @@ class BSRGAN:
             util.mkdir(save_path)
             result = util.imsave(img, os.path.join(save_path, self.model_name+'.png'))
             return result
+
+if __name__ == '__main__':
+    model_path = 'kadirnar/bsrgan'
+    img_path = 'data/images/butterfly.png'
+    bsrgan = BSRGAN(model_path, device='cuda:0')
+    result = bsrgan.predict(img_path)
