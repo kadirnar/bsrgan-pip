@@ -3,8 +3,25 @@ import datetime
 import logging
 
 
+'''
+# --------------------------------------------
+# Kai Zhang (github: https://github.com/cszn)
+# 03/Mar/2019
+# --------------------------------------------
+# https://github.com/xinntao/BasicSR
+# --------------------------------------------
+'''
+
+
 def log(*args, **kwargs):
     print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:"), *args, **kwargs)
+
+
+'''
+# --------------------------------------------
+# logger
+# --------------------------------------------
+'''
 
 
 def logger_info(logger_name, log_path='default_logger.log'):
@@ -27,6 +44,14 @@ def logger_info(logger_name, log_path='default_logger.log'):
         sh = logging.StreamHandler()
         sh.setFormatter(formatter)
         log.addHandler(sh)
+
+
+'''
+# --------------------------------------------
+# print to file and std_out simultaneously
+# --------------------------------------------
+'''
+
 
 class logger_print(object):
     def __init__(self, log_path="default.log"):

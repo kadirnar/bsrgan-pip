@@ -12,6 +12,20 @@ import scipy.stats as ss
 from scipy.interpolate import interp2d
 from scipy.linalg import orth
 
+
+
+
+"""
+# --------------------------------------------
+# Super-Resolution
+# --------------------------------------------
+#
+# Kai Zhang (cskaizhang@gmail.com)
+# https://github.com/cszn
+# From 2019/03--2021/08
+# --------------------------------------------
+"""
+
 def modcrop_np(img, sf):
     '''
     Args:
@@ -26,6 +40,11 @@ def modcrop_np(img, sf):
     return im[:w - w % sf, :h - h % sf, ...]
 
 
+"""
+# --------------------------------------------
+# anisotropic Gaussian kernels
+# --------------------------------------------
+"""
 def analytic_kernel(k):
     """Calculate the X4 kernel from the X2 kernel (for proof see appendix in paper)"""
     k_size = k.shape[0]
@@ -198,6 +217,12 @@ def fspecial(filter_type, *args, **kwargs):
         return fspecial_gaussian(*args, **kwargs)
     if filter_type == 'laplacian':
         return fspecial_laplacian(*args, **kwargs)
+
+"""
+# --------------------------------------------
+# degradation models
+# --------------------------------------------
+"""
 
 
 def bicubic_degradation(x, sf=3):
@@ -420,6 +445,7 @@ def degradation_bsrgan(img, sf=4, lq_patchsize=72, isp_model=None):
     """
     isp_prob, jpeg_prob, scale2_prob = 0.25, 0.9, 0.25
     sf_ori = sf
+
     h1, w1 = img.shape[:2]
     img = img.copy()[:h1 - h1 % sf, :w1 - w1 % sf, ...]  # mod crop
     h, w = img.shape[:2]
@@ -580,3 +606,26 @@ def degradation_bsrgan_plus(img, sf=4, shuffle_prob=0.5, use_sharp=True, lq_patc
     img, hq = random_crop(img, hq, sf, lq_patchsize)
 
     return img, hq
+
+
+
+if __name__ == '__main__':
+    img = util.imread_uint('utils/test.png', 3)
+    img = util.uint2single(img)
+    sf = 4
+    
+    for i in range(20):
+        img_lq, img_hq = degradation_bsrgan(img, sf=sf, lq_patchsize=72)
+        print(i)
+        lq_nearest =  cv2.resize(util.single2uint(img_lq), (int(sf*img_lq.shape[1]), int(sf*img_lq.shape[0])), interpolation=0)
+        img_concat = np.concatenate([lq_nearest, util.single2uint(img_hq)], axis=1)
+        util.imsave(img_concat, str(i)+'.png')
+
+#    for i in range(10):
+#        img_lq, img_hq = degradation_bsrgan_plus(img, sf=sf, shuffle_prob=0.1, use_sharp=True, lq_patchsize=64)
+#        print(i)
+#        lq_nearest =  cv2.resize(util.single2uint(img_lq), (int(sf*img_lq.shape[1]), int(sf*img_lq.shape[0])), interpolation=0)
+#        img_concat = np.concatenate([lq_nearest, util.single2uint(img_hq)], axis=1)
+#        util.imsave(img_concat, str(i)+'.png')
+
+#    run utils/utils_blindsr.py

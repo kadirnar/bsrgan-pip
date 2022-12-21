@@ -17,8 +17,10 @@ class BSRGAN:
         model_name = os.path.splitext(os.path.basename(self.model_path))[0]
         if [model_name] in ['BSRGANx2']:
             sf = 2
+        else:
+            sf = 4
             
-        model = RRDBNet(in_nc=3, out_nc=3, nf=64, nb=23, gc=32, sf=4)  # define network
+        model = RRDBNet(in_nc=3, out_nc=3, nf=64, nb=23, gc=32, sf=sf)
         model.load_state_dict(torch.load(self.model_path), strict=True)
         model.eval()
         
@@ -39,7 +41,7 @@ class BSRGAN:
         img = util.tensor2uint(img)
         
         if self.save:
-            save_path = os.path.join('data/images_results')
+            save_path = os.path.join('results')
             util.mkdir(save_path)
             result = util.imsave(img, os.path.join(save_path, self.model_name+'.png'))
             return result

@@ -6,6 +6,7 @@ import torch
 import cv2
 from torchvision.utils import make_grid
 from datetime import datetime
+# import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
@@ -205,7 +206,7 @@ def imsave(img, img_path):
     if img.ndim == 3:
         img = img[:, :, [2, 1, 0]]
     cv2.imwrite(img_path, img)
-    return img
+    return img_path
 
 def imwrite(img, img_path):
     img = np.squeeze(img)
