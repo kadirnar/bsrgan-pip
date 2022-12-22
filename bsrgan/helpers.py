@@ -8,8 +8,14 @@ from bsrgan.main_download_pretrained_models import attempt_download_from_hub
 class BSRGAN:
     def __init__(self, model_path, device):
         self.device = device
-        self.model_path = attempt_download_from_hub(model_path, hf_token=None)
         self.save = True
+        self.hf_model = False
+        
+        if self.hf_model:
+            self.model_path = attempt_download_from_hub(model_path)
+        else:
+            self.model_path = model_path
+            
         self.load_model()
     
     def load_model(self):
