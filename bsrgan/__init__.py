@@ -1,3 +1,3 @@
 from bsrgan.helpers import BSRGAN
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"

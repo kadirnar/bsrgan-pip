@@ -6,20 +6,20 @@ from bsrgan.models.network_rrdbnet import RRDBNet
 from bsrgan.main_download_pretrained_models import attempt_download_from_hub
 
 class BSRGAN:
-    def __init__(self, model_path, device):
+    def __init__(self, model_path, device, hf_model=False):
         self.device = device
         self.save = True
-        self.hf_model = False
         
-        if self.hf_model:
-            self.model_path = attempt_download_from_hub(model_path)
+        if hf_model:
+            model_path = attempt_download_from_hub(model_path)
         else:
-            self.model_path = model_path
-            
+            model_path = model_path
+        
+        self.model_path = model_path
+        
         self.load_model()
     
     def load_model(self):
-        
         model_name = os.path.splitext(os.path.basename(self.model_path))[0]
         if [model_name] in ['BSRGANx2']:
             sf = 2
@@ -55,5 +55,5 @@ class BSRGAN:
 if __name__ == '__main__':
     model_path = 'kadirnar/bsrgan'
     img_path = 'data/images/butterfly.png'
-    bsrgan = BSRGAN(model_path, device='cuda:0')
+    bsrgan = BSRGAN(model_path, device='cuda:0', hf_model=True)
     result = bsrgan.predict(img_path)
